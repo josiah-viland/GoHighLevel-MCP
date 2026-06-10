@@ -26,6 +26,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "tsc --noEmit"
+    "start:mcp": "node dist/main.js",
   },
   "keywords": [
     "mcp",

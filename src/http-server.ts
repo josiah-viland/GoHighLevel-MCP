@@ -207,6 +207,24 @@ class GHLMCPHttpServer {
 
   private setupRoutes(): void {
 
+    // OAuth protected resource metadata
+this.app.get('/.well-known/oauth-protected-resource', (req, res) => {
+  const base = 'https://' + req.get('host');
+  res.json({
+    resource: base,
+    authorization_servers: [base],
+    bearer_methods_supported: ['header']
+  });
+});
+
+this.app.get('/.well-known/oauth-protected-resource/sse', (req, res) => {
+  const base = 'https://' + req.get('host');
+  res.json({
+    resource: base + '/sse',
+    authorization_servers: [base],
+    bearer_methods_supported: ['header']
+  });
+});
     // OAuth endpoints for Claude.ai
     this.app.get('/.well-known/oauth-authorization-server', (req, res) => {
       const base = 'https://' + req.get('host');

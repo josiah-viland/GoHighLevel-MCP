@@ -211,13 +211,12 @@ app.all('/mcp', async (req, res) => {
 
     if (req.method === 'POST' && !sessionId) {
       console.log('[MCP] Creating new session...');
-      
+
+      const newSessionId = Math.random().toString(36).substring(2, 15);
+      console.log(`[MCP] Generated session ID: ${newSessionId}`);
+
       const transport = new StreamableHTTPServerTransport({
-        sessionIdGenerator: () => {
-          const id = Math.random().toString(36).substring(2, 15);
-          console.log(`[MCP] Generated session ID: ${id}`);
-          return id;
-        },
+        sessionIdGenerator: () => newSessionId,
         onsessioninitialized: (id: string) => {
           console.log(`[MCP] Session initialized: ${id}`);
           transports.set(id, transport);
@@ -230,6 +229,9 @@ app.all('/mcp', async (req, res) => {
           transports.delete(transport.sessionId);
         }
       };
+
+      res.setHeader('Mcp-Session-Id', newSessionId);
+      transports.set(newSessionId, transport);
 
       const server = createMCPServer();
       await server.connect(transport);

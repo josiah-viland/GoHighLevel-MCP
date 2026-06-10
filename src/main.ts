@@ -235,14 +235,14 @@ app.all('/mcp', async (req, res) => {
 
       const server = createMCPServer();
       await server.connect(transport);
-      await transport.handleRequest(req, res);
+      await transport.handleRequest(req, res, req.body);
       return;
     }
 
     if (sessionId && transports.has(sessionId)) {
       console.log(`[MCP] Resuming session: ${sessionId}`);
       const transport = transports.get(sessionId)!;
-      await transport.handleRequest(req, res);
+      await transport.handleRequest(req, res, req.body);
       return;
     }
 

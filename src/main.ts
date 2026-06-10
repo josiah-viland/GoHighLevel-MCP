@@ -241,3 +241,19 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   res.json({
     name: 'GoHighLevel MCP Server',
+version: '1.0.0',
+    status: 'running',
+    endpoints: { health: '/health', mcp: '/mcp', oauth: '/.well-known/oauth-authorization-server' }
+  });
+});
+
+app.listen(port, '0.0.0.0', () => {
+  console.log('✅ GoHighLevel MCP Streamable HTTP Server started!');
+  console.log(`🌐 Server: http://0.0.0.0:${port}`);
+  console.log(`🔗 MCP Endpoint: http://0.0.0.0:${port}/mcp`);
+  console.log(`📋 Tools: ${allTools.length}`);
+  console.log('🎯 Ready for Claude.ai integration!');
+});
+
+process.on('SIGINT', () => { console.log('\nShutting down...'); process.exit(0); });
+process.on('SIGTERM', () => { console.log('\nShutting down...'); process.exit(0); });

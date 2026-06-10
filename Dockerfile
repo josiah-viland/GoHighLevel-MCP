@@ -23,4 +23,4 @@ EXPOSE 8000
 ENV NODE_ENV=production
 
 # Start the HTTP server
-CMD ["npm", "start"] 
+CMD ["npm", "run", "start:mcp"]

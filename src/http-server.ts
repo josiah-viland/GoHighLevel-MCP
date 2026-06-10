@@ -217,7 +217,8 @@ class GHLMCPHttpServer {
         registration_endpoint: base + '/oauth/register',
         response_types_supported: ['code'],
         grant_types_supported: ['authorization_code'],
-        code_challenge_methods_supported: ['S256']
+        code_challenge_methods_supported: ['S256'],
+        token_endpoint_auth_methods_supported: ['none']
       });
     });
 
@@ -233,16 +234,19 @@ class GHLMCPHttpServer {
     });
 
     this.app.get('/oauth/authorize', (req, res) => {
-      const { redirect_uri, state } = req.query;
+      const { redirect_uri, state, code_challenge, code_challenge_method } = req.query;
+      console.log(`[OAuth] Authorize request - redirect_uri: ${redirect_uri}, state: ${state}`);
       const redirectUrl = `${redirect_uri}?code=ghl-mcp-code&state=${state}`;
       res.redirect(redirectUrl);
     });
 
     this.app.post('/oauth/token', (req, res) => {
+      console.log('[OAuth] Token request received');
       res.json({
         access_token: 'ghl-mcp-token',
         token_type: 'bearer',
-        expires_in: 86400
+        expires_in: 86400,
+        scope: 'mcp'
       });
     });
 
